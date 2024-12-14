@@ -1,0 +1,5 @@
+cred_file = "./.secure/cred.json"
+project_id = "model-height-439805-h4"
+region = "us-central1"
+zone = "us-central1-a"
+bucket_name = "new-ashwa-yashwa"
