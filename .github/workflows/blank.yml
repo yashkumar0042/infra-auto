@@ -1,13 +1,18 @@
-# .github/workflows/terraform-plan.yml
 name: Terraform Plan
 
 on:
   push:
     branches:
-      - "**"  # Triggers on all branches
+      - '**'  # Triggers on all branches
 
 jobs:
   terraform-plan:
+    # Ensures the workflow can use GitHub Actions marketplace and, if needed,
+    # authenticate with OIDC for GCP. (contents: read, id-token: write)
+    permissions:
+      contents: read
+      id-token: write
+
     runs-on: ubuntu-latest
 
     steps:
@@ -17,11 +22,12 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.5.7 # Use your desired version
+          terraform_version: '1.5.7'  # Adjust to your desired version
 
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v1
         with:
+          # If you're using a GCP keyfile, set this secret in your repo settings
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Set Google Cloud Project
