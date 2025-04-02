@@ -1,5 +1,5 @@
 cred_file = "./.secure/cred.json"
-project_id = "model-height-439805-h4"
+project_id = ""trans-run-449807-p8
 region = "us-central1"
 zone = "us-central1-a"
-bucket_name = "new-ashwa-yashwa"
+bucket_name = "new-asha-yaswa"
