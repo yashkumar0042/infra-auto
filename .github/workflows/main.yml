@@ -3,12 +3,10 @@ name: Terraform Plan
 on:
   push:
     branches:
-      - '**'  # Triggers on all branches
+      - '**'
 
 jobs:
   terraform-plan:
-    # Ensures the workflow can use GitHub Actions marketplace and, if needed,
-    # authenticate with OIDC for GCP. (contents: read, id-token: write)
     permissions:
       contents: read
       id-token: write
@@ -22,28 +20,34 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: '1.5.7'  # Adjust to your desired version
+          terraform_version: '1.5.7'
 
       - name: Authenticate with GCP
-        uses: google-github-actions/auth@v1
+        uses: google-github-actions/auth@v2
         with:
-          # If you're using a GCP keyfile, set this secret in your repo settings
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Set Google Cloud Project
+      # Optional: Setup gcloud CLI if you're using gcloud commands
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Set GCP Project (Optional)
         run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Initialize Terraform
+      - name: Terraform Init
         run: terraform init
+        working-directory: terraform
 
-      - name: Generate Terraform Plan
+      - name: Terraform Plan
         run: terraform plan -var-file=dev.tfvars -out=tfplan
+        working-directory: terraform
 
       - name: Show Terraform Plan
         run: terraform show tfplan
+        working-directory: terraform
 
-      - name: Upload Plan as an Artifact
+      - name: Upload Plan Artifact
         uses: actions/upload-artifact@v3
         with:
           name: tfplan
-          path: tfplan
+          path: terraform/tfplan
