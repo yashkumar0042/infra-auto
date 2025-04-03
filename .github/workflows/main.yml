@@ -27,8 +27,7 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Optional: Setup gcloud CLI if you're using gcloud commands
-      - name: Set up gcloud CLI
+      - name: Setup gcloud CLI (Optional)
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Set GCP Project (Optional)
@@ -47,9 +46,7 @@ jobs:
         working-directory: terraform
 
       - name: Upload Plan Artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v3
         with:
           name: tfplan
           path: terraform/tfplan
-
-
